@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     for i in range(50):
         with open(f"data/{i}.json", "w") as f:
-            obj = json.dumps(generate_random_json())
+            obj = json.dumps(generate_random_json(), indent=4)
             f.write(obj)
             print(f'File "{i}.json" created (length of {len(obj)})')
 

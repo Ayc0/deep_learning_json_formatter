@@ -22,5 +22,5 @@ pipenv install
 ## Generate data
 
 ```bash
-./generate_data.py
+pipenv run generate_data
 ```
