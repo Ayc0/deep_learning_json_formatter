@@ -23,4 +23,7 @@ pipenv install
 
 ```bash
 pipenv run generate_data
+pipenv run generate_data 200
 ```
+
+By default `generate_data` will generate 50 JSONs.

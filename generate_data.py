@@ -2,8 +2,15 @@
 import os
 import shutil
 import json
+import sys
 
 from random_json import generate_random_json
+
+default_nb_json = 50
+nb_json = default_nb_json
+
+if len(sys.argv) >= 2:
+    nb_json = int(sys.argv[1])
 
 
 if __name__ == "__main__":
@@ -19,7 +26,7 @@ if __name__ == "__main__":
     os.mkdir(data_folder, access_rights)
     print('"data" folder created \n')
 
-    for i in range(50):
+    for i in range(nb_json):
         with open(f"data/{i}.json", "w") as f:
             obj = json.dumps(generate_random_json(), indent=4)
             f.write(obj)
