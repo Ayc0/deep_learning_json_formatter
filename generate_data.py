@@ -4,7 +4,7 @@ import shutil
 import json
 import sys
 
-from random_json import generate_random_json
+from random_json import generate_random_json, format_json
 
 default_nb_json = 50
 nb_json = default_nb_json
@@ -28,7 +28,6 @@ if __name__ == "__main__":
 
     for i in range(nb_json):
         with open(f"data/{i}.json", "w") as f:
-            obj = json.dumps(generate_random_json(), indent=4)
+            obj = format_json(generate_random_json())
             f.write(obj)
             print(f'File "{i}.json" created (length of {len(obj)})')
-

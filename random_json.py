@@ -70,7 +70,8 @@ def generate_random_array(
 
     array = []
     for _ in range(length):
-        array.append(generate_random_json(max_depth - 1, max_array_length=max_array_length))
+        array.append(generate_random_json(
+            max_depth - 1, max_array_length=max_array_length))
 
     return array
 
@@ -92,9 +93,14 @@ def generate_random_object(
     object = {}
     for _ in range(key_count):
         key = generate_random_key_name(max_key_length=max_key_length)
-        object[key] = generate_random_json(max_depth - 1, max_key_length=max_key_length)
+        object[key] = generate_random_json(
+            max_depth - 1, max_key_length=max_key_length)
 
     return object
+
+
+def format_json(obj):
+    return json.dumps(obj, indent=4)
 
 
 def generate_random_json(
@@ -146,4 +152,3 @@ def generate_random_json(
         json = None
 
     return json
-
