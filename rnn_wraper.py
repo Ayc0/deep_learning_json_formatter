@@ -96,7 +96,7 @@ def train(cat_tensor, in_tensor, tgt_tensor):
 
 
 def train_nn():
-    n_iters = 300
+    n_iters = 500
     print_interval = 5
     plot_interval = 10
     losses_list = []
@@ -117,9 +117,35 @@ def train_nn():
 
     # Plot
     plt.figure()
-    plt.plot(losses_list)
+    plt.plot(range(plot_interval, n_iters + plot_interval, plot_interval), losses_list)
+    plt.xlabel("Itérations")
+    plt.ylabel("Loss")
     plt.savefig("./out.png")
 
 
 rnn = RNN(n_char, 128, n_char)
 train_nn()
+
+
+def sample(start_letter="{"):
+    with torch.no_grad():  # no need to track history in sampling
+        category_tensor = category_tensor(category)
+        input = input_tensor(start_letter)
+        hidden = rnn.initHidden()
+
+        output_name = start_letter
+
+        for i in range(max_length):
+            output, hidden = rnn(category_tensor, input[0], hidden)
+            topv, topi = output.topk(1)
+            topi = topi[0][0]
+            if topi == n_letters - 1:
+                break
+            else:
+                letter = all_letters[topi]
+                output_name += letter
+            input = input_tensor(letter)
+
+        return output_name
+
+print(sample())
