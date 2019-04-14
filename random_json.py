@@ -1,4 +1,4 @@
-from random import random
+from random import random, randrange, choice
 import json
 
 default_max_depth = 2
@@ -8,9 +8,15 @@ default_max_array_length = 10
 default_max_object_keys = 10
 default_max_key_length = 10
 
+number = "0123456789"
+letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+point = "!,.:;?"
+other = r""" \"#$%&'()*+-/<=>@[]^_`{|}~"""
+full_alphabet = number + letter + point + other
+
 
 def choose_one(choices):
-    return choices[int(random() * len(choices))]
+    return choice(choices)
 
 
 def generate_random_boolean():
@@ -35,6 +41,13 @@ def generate_random_string(max_string_length=default_max_string_length):
         "number",
         "number",
         "number",
+        "number",
+        "letter",
+        "letter",
+        "letter",
+        "letter",
+        "letter",
+        "letter",
         "letter",
         "letter",
         "letter",
@@ -43,19 +56,19 @@ def generate_random_string(max_string_length=default_max_string_length):
         "point",
         "other",
     ]
-    length = int(random() * max_string_length)
+    length = randrange(max_string_length)
     string = ""
 
     for _ in range(length):
         choice = choose_one(choices)
         if choice == "number":
-            alphabet = "1234567890"
+            alphabet = number
         elif choice == "letter":
-            alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+            alphabet = letter
         elif choice == "point":
-            alphabet = "!,.:;?"
+            alphabet = point
         else:
-            alphabet = r""" \"#$%&'()*+-/<=>@[]^_`{|}~"""
+            alphabet = other
         string += choose_one(alphabet)
     return string
 
@@ -66,18 +79,17 @@ def generate_random_array(
     max_key_length=default_max_key_length,
     max_object_keys=default_max_object_keys,
 ):
-    length = int(random() * max_array_length)
+    length = randrange(max_array_length)
 
     array = []
     for _ in range(length):
-        array.append(generate_random_json(
-            max_depth - 1, max_array_length=max_array_length))
+        array.append(generate_random_json(max_depth - 1, max_array_length=max_array_length))
 
     return array
 
 
 def generate_random_key_name(max_key_length=default_max_key_length):
-    key_length = 1 + int(random() * max_key_length)
+    key_length = 1 + randrange(max_key_length)
     random_string = generate_random_string()
     return random_string[:key_length]
 
@@ -88,13 +100,12 @@ def generate_random_object(
     max_key_length=default_max_key_length,
     max_object_keys=default_max_object_keys,
 ):
-    key_count = int(random() * max_object_keys)
+    key_count = randrange(max_object_keys)
 
     object = {}
     for _ in range(key_count):
         key = generate_random_key_name(max_key_length=max_key_length)
-        object[key] = generate_random_json(
-            max_depth - 1, max_key_length=max_key_length)
+        object[key] = generate_random_json(max_depth - 1, max_key_length=max_key_length)
 
     return object
 
