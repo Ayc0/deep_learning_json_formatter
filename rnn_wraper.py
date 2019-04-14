@@ -26,10 +26,10 @@ criterion = nn.NLLLoss()
 learning_rate = 0.0005
 
 
-def to_ascii(s: str):
-    # From https://stackoverflow.com/a/518232/2809427
-    return ''.join(c for c in unicodedata.normalize('NFD', s)
-                   if unicodedata.category(c) != 'Mn' and c in alphabet)
+# def to_ascii(s: str):
+#     # From https://stackoverflow.com/a/518232/2809427
+#     return ''.join(c for c in unicodedata.normalize('NFD', s)
+#                    if unicodedata.category(c) != 'Mn' and c in alphabet)
 
 
 def random_training_pair():
@@ -51,7 +51,7 @@ def category_tensor(category):
 
 def input_tensor(obj):
     sample = str(obj)
-    tensor = torch.zeros(len(sample), 1, len(alphabet))
+    tensor = torch.zeros(len(sample), 1, n_char)
     for i in range(len(sample)):
         char = sample[i]
         tensor[i][0][alphabet.find(char)] = 1
@@ -61,7 +61,7 @@ def input_tensor(obj):
 def target_tensor(obj):
     sample = str(obj)
     indexes = [alphabet.find(sample[i]) for i in range(1, len(sample))]
-    indexes.append(len(alphabet))  # This corresponds to the EOS character
+    indexes.append(n_char-1)  # This corresponds to the EOS character
     return torch.LongTensor(indexes)
 
 
@@ -100,7 +100,7 @@ def train(cat_tensor, in_tensor, tgt_tensor):
 
 def train_nn():
     n_iters = 100000
-    print_interval = 5000
+    print_interval = 500
     plot_interval = 500
     losses_list = []
     interval_loss = 0  # Reset every plot_every iters
