@@ -7,6 +7,12 @@ import random
 import json
 import time
 import math
+
+import matplotlib
+
+matplotlib.use("PS")
+
+
 import matplotlib.pyplot as plt
 import torch
 
