@@ -1,11 +1,17 @@
 Table of contents
 
 - [Requirements](#requirements)
+  - [Python](#python)
   - [Pipenv](#pipenv)
 - [Install](#install)
 - [Generate data](#generate-data)
+- [Run code](#run-code)
 
 ## Requirements
+
+### Python
+
+Python **3.7**
 
 ### Pipenv
 
@@ -27,3 +33,9 @@ pipenv run generate_data 200
 ```
 
 By default `generate_data` will generate 50 JSONs.
+
+## Run code
+
+```bash
+pipenv run exec
+```
