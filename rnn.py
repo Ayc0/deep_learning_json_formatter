@@ -25,6 +25,7 @@ class RNN(nn.Module):
         output = self.out_to_out(output_combined)
         output = self.dropout(output)
         output = self.softmax(output)
+        output = output.add(1e-8)
         return output, hidden
 
     def init_hidden(self):
