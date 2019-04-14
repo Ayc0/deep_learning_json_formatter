@@ -10,7 +10,7 @@ import math
 import matplotlib.pyplot as plt
 import torch
 
-from random_json import generate_random_json
+from random_json import generate_random_json, format_json
 from rnn import *
 
 # Two categories: well-formatted (0) and not well-formatted (1)
@@ -19,7 +19,8 @@ categories = ["pretty", "raw"]
 # Alphabet
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + \
     "1234567890" + "!,.:;?" + r""" \"#$%&'()*+-/<=>@[]^_`{|}~"""
-n_char = len(alphabet) + 1
+n_char = len(alphabet) + 1  # Include EOS as a character
+
 # Learning parameters
 criterion = nn.NLLLoss()
 learning_rate = 0.0005
@@ -32,11 +33,12 @@ def to_ascii(s: str):
 
 
 def random_training_pair():
-    category = random.randint(0, 1)
+    index = random.randint(0, n_categories-1)
+    category = categories[index]
     obj = generate_random_json()
     if category == 0:
         # Format the JSON
-        obj = json.dumps(json.loads(obj), indent=4)
+        obj = format_json(obj)
     return category, obj
 
 
@@ -57,10 +59,9 @@ def input_tensor(obj):
 
 
 def target_tensor(obj):
-    # Weird stuff in original version
     sample = str(obj)
     indexes = [alphabet.find(sample[i]) for i in range(1, len(sample))]
-    indexes.append(len(alphabet))  # This corresponds to the EOS/EOF character
+    indexes.append(len(alphabet))  # This corresponds to the EOS character
     return torch.LongTensor(indexes)
 
 
@@ -86,7 +87,7 @@ def train(cat_tensor, in_tensor, tgt_tensor):
 
     loss = 0
     for i in range(in_tensor.size(0)):
-        out, hidden = rnn(cat_tensor, in_tensor[i], hidden, n_categories)
+        out, hidden = rnn(cat_tensor, in_tensor[i], hidden)
         l = criterion(out, tgt_tensor[i])
         loss += l
     loss.backward()
@@ -116,12 +117,12 @@ def train_nn():
         if iter % plot_interval == 0:
             losses_list.append(interval_loss/plot_interval)
             interval_loss = 0
-    
+
     # Plot
     plt.figure()
     plt.plot(losses_list)
     plt.show()
 
 
-rnn = RNN(n_char, 128, n_char, n_categories)
+rnn = RNN(n_char, 128, 2048)
 train_nn()

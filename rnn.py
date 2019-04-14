@@ -2,9 +2,11 @@
 import torch
 import torch.nn as nn
 
+# Number of categories
+n_categories = 2
 
 class RNN(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, n_categories):
+    def __init__(self, input_size, hidden_size, output_size):
         super(RNN, self).__init__()
         self.hidden_size = hidden_size
 
