@@ -11,7 +11,8 @@ default_max_key_length = 10
 number = "0123456789"
 letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 point = "!,.:;?"
-other = r""" \"#$%&'()*+-/<=>@[]^_`{|}~"""
+other = r""" \"#$%&'()*+-/<=>@[]^_`{|}~
+"""
 full_alphabet = number + letter + point + other
 
 

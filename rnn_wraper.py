@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import division
 import os
 import json
 import random
@@ -30,7 +29,7 @@ learning_rate = 0.0005
 
 
 def random_training_pair():
-    index = random.randint(0, n_categories - 1)
+    index = random.randrange(n_categories)
     category = categories[index]
     obj = generate_random_json()
     if category == 0:
@@ -74,7 +73,7 @@ def time_elapsed(origin):
     seconds = time.time() - origin
     minutes = math.floor(seconds / 60)
     seconds -= minutes * 60
-    return "{:d}m {:d}s".format(minutes, seconds)
+    return "{}m {}s".format(int(minutes), int(seconds))
 
 
 def train(cat_tensor, in_tensor, tgt_tensor):
@@ -87,6 +86,7 @@ def train(cat_tensor, in_tensor, tgt_tensor):
         out, hidden = rnn(cat_tensor, in_tensor[i], hidden)
         l = criterion(out, tgt_tensor[i])
         loss += l
+    # print(out, out.max(), tgt_tensor[i], type(loss), loss)
     loss.backward()
 
     for p in rnn.parameters():
@@ -96,9 +96,9 @@ def train(cat_tensor, in_tensor, tgt_tensor):
 
 
 def train_nn():
-    n_iters = 100000
-    print_interval = 500
-    plot_interval = 500
+    n_iters = 300
+    print_interval = 5
+    plot_interval = 10
     losses_list = []
     interval_loss = 0  # Reset every plot_interval iterations
 
@@ -118,8 +118,8 @@ def train_nn():
     # Plot
     plt.figure()
     plt.plot(losses_list)
-    plt.show()
+    plt.savefig("./out.png")
 
 
-rnn = RNN(n_char, 128, 2048)
+rnn = RNN(n_char, 128, n_char)
 train_nn()

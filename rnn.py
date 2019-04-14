@@ -5,15 +5,14 @@ import torch.nn as nn
 # Number of categories
 n_categories = 2
 
+
 class RNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
         super(RNN, self).__init__()
         self.hidden_size = hidden_size
 
-        self.in_to_hidden = nn.Linear(
-            n_categories + input_size + hidden_size, hidden_size)
-        self.in_to_out = nn.Linear(
-            n_categories + input_size + hidden_size, output_size)
+        self.in_to_hidden = nn.Linear(n_categories + input_size + hidden_size, hidden_size)
+        self.in_to_out = nn.Linear(n_categories + input_size + hidden_size, output_size)
         self.out_to_out = nn.Linear(hidden_size + output_size, output_size)
         self.dropout = nn.Dropout(0.1)
         self.softmax = nn.LogSoftmax(dim=1)
