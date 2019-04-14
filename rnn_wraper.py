@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
+from __future__ import division
 import os
 import json
-import sys
-import unicodedata
 import random
 import json
 import time
@@ -14,8 +13,8 @@ from random_json import generate_random_json, format_json
 from rnn import *
 
 # Two categories: well-formatted (0) and not well-formatted (1)
-n_categories = 2
 categories = ["pretty", "raw"]
+n_categories = 2
 # Alphabet
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + \
     "1234567890" + "!,.:;?" + r""" \"#$%&'()*+-/<=>@[]^_`{|}~"""
@@ -24,12 +23,6 @@ n_char = len(alphabet) + 1  # Include EOS as a character
 # Learning parameters
 criterion = nn.NLLLoss()
 learning_rate = 0.0005
-
-
-# def to_ascii(s: str):
-#     # From https://stackoverflow.com/a/518232/2809427
-#     return ''.join(c for c in unicodedata.normalize('NFD', s)
-#                    if unicodedata.category(c) != 'Mn' and c in alphabet)
 
 
 def random_training_pair():
@@ -103,7 +96,7 @@ def train_nn():
     print_interval = 500
     plot_interval = 500
     losses_list = []
-    interval_loss = 0  # Reset every plot_every iters
+    interval_loss = 0  # Reset every plot_interval iterations
 
     begin = time.time()
 
